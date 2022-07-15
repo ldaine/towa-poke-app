@@ -1,1 +1,1 @@
-export * from './listItem/ListItem';
+export * from './pokemonCard/PokemonCard';

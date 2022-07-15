@@ -11,18 +11,20 @@ import {
   IonToolbar,
   useIonViewWillEnter
 } from '@ionic/react';
-import { Message } from '@models/IMessage';
-import DataService from 'src/services/DataService';
-import ListItem from 'src/components/listItem/ListItem';
 import './Home.css';
+import PokeService from 'src/services/PokeService';
+import PokemonCard from 'src/components/pokemonCard/PokemonCard';
+import { Pokemon } from 'src/models';
 
 const Home: React.FC = () => {
 
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [pokemon, setPokemon] = useState<Pokemon[]>([]);
 
   useIonViewWillEnter(() => {
-    const msgs = DataService.getMessages();
-    setMessages(msgs);
+    PokeService.getAll().then(data => {
+      console.log('Pokemon', data);
+      setPokemon(data);
+    });
   });
 
   const refresh = (e: CustomEvent) => {
@@ -35,24 +37,15 @@ const Home: React.FC = () => {
     <IonPage id="home-page">
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Inbox</IonTitle>
+          <IonTitle>Towa Poke App</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
+      <IonContent>
         <IonRefresher slot="fixed" onIonRefresh={refresh}>
           <IonRefresherContent></IonRefresherContent>
         </IonRefresher>
-
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">
-              Inbox
-            </IonTitle>
-          </IonToolbar>
-        </IonHeader>
-
         <IonList>
-          {messages.map(m => <ListItem key={m.id} message={m} />)}
+          {pokemon.map(p => <PokemonCard key={p.name} pokemon={p} />)}
         </IonList>
       </IonContent>
     </IonPage>

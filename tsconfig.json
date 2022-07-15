@@ -19,13 +19,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": ".", // this must be specified if "paths" is specified.
-    "paths": {
-      "@pages/*": ["src/pages"],
-      "@components/*": ["src/components"],
-      "@models/*": ["src/models"],
-      "@services/*": ["src/services"]
-    }
+    "baseUrl": "."
   },
   "include": [
     "src"
