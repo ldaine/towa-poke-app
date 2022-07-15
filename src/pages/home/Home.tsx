@@ -4,7 +4,6 @@ import {
   IonButton,
   IonButtons,
   IonContent,
-  IonGrid,
   IonHeader,
   IonIcon,
   IonList,
@@ -29,9 +28,12 @@ enum View {
 const Home: React.FC = () => {
   const [pokemon, setPokemon] = useState<Pokemon[]>([]);
   const [view, setView] = useState<View>(View.List);
+  const [pokeService, setPokeService] = useState<PokeService>();
 
   useIonViewWillEnter(() => {
-    PokeService.getAll().then(data => {
+    const service = new PokeService()
+    setPokeService(service);
+    service.getAll().then(data => {
       setPokemon(data);
     });
   });
@@ -42,19 +44,25 @@ const Home: React.FC = () => {
     }, 3000);
   };
 
+  const loadNext = () => {
+    pokeService?.getAll().then(data => {
+      setPokemon([...pokemon, ...data]);
+    });
+  };
+
   return (
     <IonPage id="home-page">
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Towa Poke App</IonTitle>
+          <IonTitle>Towa Poke App {pokeService?.totalPokemonCount}</IonTitle>
           <IonButtons slot="secondary">
-          <IonButton disabled={view === View.List} onClick={() => setView(View.List)}>
-            <IonIcon slot="icon-only" icon={list} />
-          </IonButton>
-          <IonButton disabled={view === View.Grid} onClick={() => setView(View.Grid)}>
-            <IonIcon slot="icon-only" icon={grid} />
-          </IonButton>
-        </IonButtons>
+            <IonButton disabled={view === View.List} onClick={() => setView(View.List)}>
+              <IonIcon slot="icon-only" icon={list} />
+            </IonButton>
+            <IonButton disabled={view === View.Grid} onClick={() => setView(View.Grid)}>
+              <IonIcon slot="icon-only" icon={grid} />
+            </IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent>
@@ -62,9 +70,19 @@ const Home: React.FC = () => {
           <IonRefresherContent></IonRefresherContent>
         </IonRefresher>
         {
-          view === View.List 
-          ? <IonList> { pokemon.map(p => <PokemonCard key={p.name} pokemon={p} />) } </IonList>
-          : <div className="flex-grid">{ pokemon.map(p => <PokemonCard key={p.name} pokemon={p} grid={true}  />) }</div>
+          view === View.List
+            ? <IonList> {pokemon.map(p => <PokemonCard key={p.name} pokemon={p} />)} </IonList>
+            : <div className="flex-grid">{pokemon.map(p => <PokemonCard key={p.name} pokemon={p} grid={true} />)}</div>
+        }
+        {
+          <div className="flex-grid">
+            {
+              !!pokeService && pokeService.totalPokemonCount > pokemon.length &&
+              <IonButton color="medium" onClick={() => loadNext()}>
+                Load More
+              </IonButton>
+            }
+          </div>
         }
       </IonContent>
     </IonPage>
