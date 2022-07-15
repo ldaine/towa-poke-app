@@ -29,3 +29,5 @@ The latest build of the current version can be found in repository. This was don
 ## Deployment to azure static apps
 
 Create static app and link the app to GitHub Repository. Source of the build is build folder.
+
+Link to Towa Poke App in Azure Static Apps: https://calm-ground-0d1d23703.1.azurestaticapps.net
