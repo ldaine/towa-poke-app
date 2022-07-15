@@ -1,11 +1,18 @@
 import {
+  IonAvatar,
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardSubtitle,
-  IonCardTitle
+  IonCardTitle,
+  IonCol,
+  IonGrid,
+  IonLabel,
+  IonRow
 } from '@ionic/react';
-import { Pokemon } from 'src/models';
+import { useEffect, useState } from 'react';
+import { Pokemon, PokemonDetails } from 'src/models';
+import PokeService from 'src/services/PokeService';
 import './PokemonCard.css';
 
 interface PokemonCardProps {
@@ -14,17 +21,28 @@ interface PokemonCardProps {
 }
 
 const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon, grid }) => {
-  return (
-    <IonCard className={grid? "grid": ""} routerLink={`/pokemon/${pokemon.id}`}>
-      <IonCardHeader>
-        <IonCardSubtitle>{pokemon.name}</IonCardSubtitle>
-        <IonCardTitle>{pokemon.name}</IonCardTitle>
-      </IonCardHeader>
 
-      <IonCardContent>
-        Keep close to Nature's heart... and break clear away, once in awhile,
-        and climb a mountain or spend a week in the woods. Wash your spirit clean.
-      </IonCardContent>
+  const [pokemonDetails, setpokemonDetails] = useState<PokemonDetails>();
+
+  useEffect(() => {
+    PokeService.getPokemon(pokemon.id.toString())
+      .then(data => setpokemonDetails(data))
+      .catch(error => console.log("Could not find pokemon", error));
+  }, [pokemon]);
+
+  return (
+    <IonCard className={grid ? "grid" : ""} routerLink={`/pokemon/${pokemon.id}`}>
+      <IonGrid>
+        <IonRow>
+          <IonCol><img src={pokemonDetails?.pictureUrl} /></IonCol>
+          <IonCol>
+            <IonCardHeader>
+              <IonCardSubtitle>{pokemonDetails?.baseExpirience}</IonCardSubtitle>
+              <IonCardTitle>{pokemonDetails?.name}</IonCardTitle>
+            </IonCardHeader>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
     </IonCard>
   );
 };

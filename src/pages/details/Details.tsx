@@ -2,9 +2,12 @@ import { useState } from 'react';
 import {
   IonBackButton,
   IonButtons,
+  IonCol,
   IonContent,
+  IonGrid,
   IonHeader,
   IonPage,
+  IonRow,
   IonToolbar,
   useIonViewWillEnter,
 } from '@ionic/react';
@@ -14,12 +17,12 @@ import PokeService from 'src/services/PokeService';
 import { PokemonDetails } from 'src/models';
 
 function Details() {
-  const [message, setMessage] = useState<PokemonDetails>();
+  const [pokemon, setPokemon] = useState<PokemonDetails>();
   const params = useParams<{ id: string }>();
 
   useIonViewWillEnter(() => {
     PokeService.getPokemon(params.id)
-      .then(data => setMessage(data))
+      .then(data => setPokemon(data))
       .catch(error => console.log("Could not find pokemon", error));
   });
 
@@ -34,18 +37,20 @@ function Details() {
       </IonHeader>
 
       <IonContent fullscreen>
-        {message ? (
+        {pokemon ? (
           <div className="ion-padding">
-            <h1>{message.name}</h1>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-              in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
+            <h1>{pokemon.name}</h1>
+            <img src={pokemon?.pictureUrl} />
+            <IonGrid>
+              <IonRow>
+                <IonCol><strong>Base Expirience</strong></IonCol>
+                <IonCol>{pokemon.baseExpirience}</IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol><strong>Height</strong></IonCol>
+                <IonCol>{pokemon.height}</IonCol>
+              </IonRow>
+            </IonGrid>
           </div>
         ) : (
           <div>Pokemon not found</div>

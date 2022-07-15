@@ -1,7 +1,7 @@
 import { IPokemonRawData, Pokemon, PokemonDetails } from "src/models";
 
 export default class PokeService {
-    private initialUrl = 'https://pokeapi.co/api/v2/pokemon?limit=10';
+    private initialUrl = 'https://pokeapi.co/api/v2/pokemon?limit=5';
     private initialFetchDone = false;
     public totalPokemonCount = 0;
     public nextUrl = ""
@@ -26,7 +26,7 @@ export default class PokeService {
         const url = `https://pokeapi.co/api/v2/pokemon/${id}/`;
         const response = await fetch(url);
         const data = await response.json();
-        console.log('data', data); 
+        // console.log('data', data); 
         return new PokemonDetails(data);
     }
 }

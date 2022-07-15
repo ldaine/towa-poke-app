@@ -54,7 +54,7 @@ const Home: React.FC = () => {
     <IonPage id="home-page">
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Towa Poke App {pokeService?.totalPokemonCount}</IonTitle>
+          <IonTitle>Towa Poke App</IonTitle>
           <IonButtons slot="secondary">
             <IonButton disabled={view === View.List} onClick={() => setView(View.List)}>
               <IonIcon slot="icon-only" icon={list} />
