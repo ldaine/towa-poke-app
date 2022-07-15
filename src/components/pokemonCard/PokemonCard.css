@@ -52,6 +52,10 @@ ion-item {
   .dot-unread {
     background: var(--ion-color-primary);
   }
+
+  .grid {
+    width: 400px;
+  }
   
   ion-footer ion-title {
     font-size: 11px;

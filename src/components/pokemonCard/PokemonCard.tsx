@@ -10,11 +10,12 @@ import './PokemonCard.css';
 
 interface PokemonCardProps {
   pokemon: Pokemon;
+  grid?: boolean;
 }
 
-const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon }) => {
+const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon, grid }) => {
   return (
-    <IonCard routerLink={`/pokemon/${pokemon.id}`}>
+    <IonCard className={grid? "grid": ""} routerLink={`/pokemon/${pokemon.id}`}>
       <IonCardHeader>
         <IonCardSubtitle>{pokemon.name}</IonCardSubtitle>
         <IonCardTitle>{pokemon.name}</IonCardTitle>
@@ -27,5 +28,9 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon }) => {
     </IonCard>
   );
 };
+
+PokemonCard.defaultProps = {
+  grid: false
+}
 
 export default PokemonCard;
