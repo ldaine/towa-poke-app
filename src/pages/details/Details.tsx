@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Message, getMessage } from '../data/messages';
 import {
   IonBackButton,
   IonButtons,
@@ -15,19 +14,21 @@ import {
 } from '@ionic/react';
 import { personCircle } from 'ionicons/icons';
 import { useParams } from 'react-router';
-import './ViewMessage.css';
+import { Message } from '@models/IMessage';
+import DataService from 'src/services/DataService';
+import './Details.css';
 
-function ViewMessage() {
+function Details() {
   const [message, setMessage] = useState<Message>();
   const params = useParams<{ id: string }>();
 
   useIonViewWillEnter(() => {
-    const msg = getMessage(parseInt(params.id, 10));
+    const msg = DataService.getMessage(parseInt(params.id, 10));
     setMessage(msg);
   });
 
   return (
-    <IonPage id="view-message-page">
+    <IonPage id="details-page">
       <IonHeader translucent>
         <IonToolbar>
           <IonButtons slot="start">
@@ -75,4 +76,4 @@ function ViewMessage() {
   );
 }
 
-export default ViewMessage;
+export default Details;

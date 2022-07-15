@@ -3,14 +3,14 @@ import {
   IonLabel,
   IonNote
   } from '@ionic/react';
-import { Message } from '../data/messages';
-import './MessageListItem.css';
+import { Message } from '@models/IMessage';
+import './ListItem.css';
 
-interface MessageListItemProps {
+interface ListItemProps {
   message: Message;
 }
 
-const MessageListItem: React.FC<MessageListItemProps> = ({ message }) => {
+const ListItem: React.FC<ListItemProps> = ({ message }) => {
   return (
     <IonItem routerLink={`/message/${message.id}`} detail={false}>
       <div slot="start" className="dot dot-unread"></div>
@@ -30,4 +30,4 @@ const MessageListItem: React.FC<MessageListItemProps> = ({ message }) => {
   );
 };
 
-export default MessageListItem;
+export default ListItem;
